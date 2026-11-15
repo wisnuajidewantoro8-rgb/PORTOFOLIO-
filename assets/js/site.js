@@ -1,4 +1,4 @@
-/* Portofolio — semua isi diambil dari data/content.json (diedit lewat /admin). */
+/* Portofolio — isi diambil dari data/*.json (diedit lewat Sveltia CMS di /admin). */
 (function () {
   const IS_BLOG = !!document.getElementById('blogApp');
   const BASE = IS_BLOG ? '' : '';
