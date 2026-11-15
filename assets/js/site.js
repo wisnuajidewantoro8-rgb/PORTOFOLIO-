@@ -23,7 +23,7 @@
   };
   const icon = n => `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${I[n] || ''}</svg>`;
   const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
-  const url = u => { u = String(u || '').trim(); if (!u) return ''; if (/^(https?:|mailto:|tel:|\/|\.\/|assets\/|data\/|#|blog\.html)/i.test(u)) return esc(u); if (/^[\w.-]+\.[a-z]{2,}/i.test(u)) return esc('https://' + u); return ''; };
+  const url = u => { u = String(u || '').trim().replace(/^\/(?=(assets|data)\/)/, ''); if (!u) return ''; if (/^(https?:|mailto:|tel:|\/|\.\/|assets\/|data\/|#|blog\.html)/i.test(u)) return esc(u); if (/^[\w.-]+\.[a-z]{2,}/i.test(u)) return esc('https://' + u); return ''; };
   const has = v => Array.isArray(v) ? v.length > 0 : !!(v && String(v).trim());
   const initials = n => String(n || '?').split(/\s+/).filter(Boolean).slice(0, 2).map(w => w[0]).join('').toUpperCase();
   const fmtDate = d => { if (!d) return ''; const t = new Date(d); return isNaN(t) ? d : t.toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' }); };
@@ -202,7 +202,19 @@
   }
 
   /* ---------- boot ---------- */
-  fetch(BASE + 'data/content.json?v=' + Date.now()).then(r => r.json()).then(d => {
+  const OBJ = ['site', 'profile', 'socials', 'about', 'contact'];
+  const LIST = ['experience', 'projects', 'publications', 'skills', 'certifications', 'education', 'volunteering', 'gallery', 'posts'];
+  const slugify = s => String(s || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '').slice(0, 80);
+  const v = Date.now();
+  const load = k => fetch(`${BASE}data/${k}.json?v=${v}`).then(r => r.ok ? r.json() : null).catch(() => null);
+  Promise.all([...OBJ, ...LIST].map(load)).then(res => {
+    const d = {};
+    OBJ.forEach((k, i) => d[k] = res[i] || {});
+    LIST.forEach((k, i) => { const r = res[OBJ.length + i]; d[k] = Array.isArray(r) ? r : (r && Array.isArray(r.items) ? r.items : []); });
+    if (!d.profile.name) throw new Error('data/profile.json tidak terbaca');
+    d.posts.forEach(p => { if (!p.slug) p.slug = slugify(p.title); });
+    return d;
+  }).then(d => {
     chrome(d, !IS_BLOG);
     if (IS_BLOG) return renderBlog(d);
     let n = 0;

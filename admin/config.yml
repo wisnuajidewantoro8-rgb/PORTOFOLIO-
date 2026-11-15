@@ -1,0 +1,269 @@
+# Sveltia CMS — panel admin portofolio
+# Login: tombol "Sign In with Token" (fine-grained token, Contents: Read and write untuk repo ini).
+
+backend:
+  name: github
+  repo: wisnuajidewantoro8-rgb/PORTOFOLIO-
+  branch: main
+  commit_messages:
+    create: "Tambah {{collection}} “{{slug}}” via Sveltia"
+    update: "Perbarui {{collection}} “{{slug}}” via Sveltia"
+    delete: "Hapus {{collection}} “{{slug}}” via Sveltia"
+    uploadMedia: "Unggah “{{path}}” via Sveltia"
+    deleteMedia: "Hapus “{{path}}” via Sveltia"
+
+site_url: https://wisnuajidewantoro8-rgb.github.io/PORTOFOLIO-/
+display_url: https://wisnuajidewantoro8-rgb.github.io/PORTOFOLIO-/
+
+media_folder: assets/uploads
+public_folder: assets/uploads
+
+collections:
+  # ======================= PROFIL & PENGATURAN =======================
+  - name: pengaturan
+    label: Profil & Pengaturan
+    icon: person
+    files:
+      - name: profile
+        label: Profil & Hero
+        file: data/profile.json
+        fields:
+          - { name: name, label: Nama lengkap, widget: string }
+          - { name: greeting, label: Sapaan kecil di atas nama, widget: string, required: false, hint: "mis. HALO, SAYA" }
+          - { name: headline, label: Kalimat utama, widget: text, required: false }
+          - { name: quote, label: Kutipan (huruf miring), widget: text, required: false }
+          - { name: status, label: Status, widget: string, required: false, hint: "mis. Terbuka untuk kolaborasi riset. Kosongkan untuk menyembunyikan." }
+          - { name: location, label: Lokasi, widget: string, required: false }
+          - { name: photo, label: Foto profil, widget: image, required: false }
+          - { name: photoCaption, label: Keterangan di bawah foto, widget: string, required: false }
+          - { name: cvUrl, label: CV (PDF), widget: file, required: false, hint: "Tombol Unduh CV muncul kalau diisi." }
+          - name: marquee
+            label: Kata kunci berjalan
+            widget: list
+            required: false
+            field: { name: item, label: Kata kunci, widget: string }
+
+      - name: about
+        label: Tentang
+        file: data/about.json
+        fields:
+          - { name: lead, label: Kalimat pembuka (tebal), widget: string, required: false }
+          - name: paragraphs
+            label: Paragraf
+            widget: list
+            required: false
+            field: { name: paragraph, label: Paragraf, widget: text }
+          - name: highlights
+            label: Angka sorotan
+            widget: list
+            required: false
+            summary: "{{fields.value}} {{fields.label}}"
+            fields:
+              - { name: value, label: Angka / nilai, widget: string }
+              - { name: label, label: Keterangan, widget: string }
+
+      - name: socials
+        label: Kontak & Media Sosial
+        file: data/socials.json
+        description: Kosongkan yang tidak ingin ditampilkan. Semua yang diisi terlihat publik.
+        fields:
+          - { name: email, label: Email, widget: string, required: false }
+          - { name: phone, label: Telepon, widget: string, required: false }
+          - { name: whatsapp, label: Nomor WhatsApp, widget: string, required: false, hint: "mis. 0812xxxx" }
+          - { name: linkedin, label: LinkedIn (URL), widget: string, required: false }
+          - { name: instagram, label: Instagram (URL), widget: string, required: false }
+          - { name: scholar, label: Google Scholar (URL), widget: string, required: false }
+          - { name: github, label: GitHub (URL), widget: string, required: false }
+
+      - name: contact
+        label: Bagian Kontak
+        file: data/contact.json
+        fields:
+          - { name: intro, label: Kalimat ajakan, widget: text, required: false }
+          - name: services
+            label: Layanan yang ditawarkan
+            widget: list
+            required: false
+            field: { name: item, label: Layanan, widget: string }
+
+      - name: site
+        label: Pengaturan Situs
+        file: data/site.json
+        fields:
+          - { name: title, label: Judul tab browser, widget: string }
+          - { name: description, label: Deskripsi untuk mesin pencari, widget: text, required: false }
+          - { name: navName, label: Nama di navbar, widget: string, required: false }
+
+  # ======================= KONTEN PORTOFOLIO =======================
+  - name: konten
+    label: Konten Portofolio
+    icon: work
+    files:
+      - name: experience
+        label: Pengalaman
+        file: data/experience.json
+        fields:
+          - name: items
+            label: Pengalaman
+            label_singular: Pengalaman
+            widget: list
+            required: false
+            add_to_top: true
+            summary: "{{fields.period}} — {{fields.title}}"
+            fields:
+              - { name: period, label: Periode, widget: string, required: false, hint: "mis. MAR 2026 - SEKARANG" }
+              - { name: title, label: Jabatan / peran / penghargaan, widget: string }
+              - { name: org, label: Instansi / penyelenggara, widget: string, required: false }
+              - { name: orgNote, label: Keterangan tambahan, widget: string, required: false }
+              - { name: logo, label: Logo instansi, widget: image, required: false }
+              - { name: image, label: Foto / sertifikat, widget: image, required: false }
+              - { name: description, label: Deskripsi, widget: text, required: false }
+              - { name: tags, label: Label, widget: list, required: false, field: { name: tag, label: Label, widget: string } }
+              - &files_field
+                name: files
+                label: Berkas terkait
+                widget: list
+                required: false
+                summary: "{{fields.label}}"
+                fields:
+                  - { name: label, label: Nama berkas, widget: string }
+                  - { name: url, label: Berkas, widget: file }
+
+      - name: projects
+        label: Proyek
+        file: data/projects.json
+        fields:
+          - name: items
+            label: Proyek
+            label_singular: Proyek
+            widget: list
+            required: false
+            add_to_top: true
+            summary: "{{fields.year}} — {{fields.title}}"
+            fields:
+              - { name: year, label: Tahun, widget: string, required: false }
+              - { name: title, label: Judul, widget: string }
+              - { name: category, label: Kategori, widget: string, required: false, hint: "Dipakai sebagai tombol filter." }
+              - { name: description, label: Deskripsi, widget: text, required: false }
+              - { name: image, label: Gambar, widget: image, required: false }
+              - { name: link, label: Tautan, widget: string, required: false }
+              - { name: tags, label: Label, widget: list, required: false, field: { name: tag, label: Label, widget: string } }
+
+      - name: publications
+        label: Publikasi
+        file: data/publications.json
+        fields:
+          - name: items
+            label: Publikasi
+            label_singular: Publikasi
+            widget: list
+            required: false
+            add_to_top: true
+            summary: "{{fields.date}} — {{fields.title}}"
+            fields:
+              - { name: role, label: Peran, widget: string, required: false, hint: "mis. Penulis Utama" }
+              - { name: date, label: Tanggal terbit, widget: string, required: false }
+              - { name: title, label: Judul, widget: text }
+              - { name: venue, label: Jurnal / konferensi, widget: string, required: false }
+              - { name: abstract, label: Abstrak, widget: text, required: false }
+              - { name: link, label: Tautan / DOI, widget: string, required: false }
+
+      - name: skills
+        label: Keahlian
+        file: data/skills.json
+        fields:
+          - name: items
+            label: Kelompok keahlian
+            label_singular: Kelompok
+            widget: list
+            required: false
+            summary: "{{fields.group}}"
+            fields:
+              - { name: group, label: Nama kelompok, widget: string }
+              - { name: items, label: Keahlian, widget: list, required: false, field: { name: skill, label: Keahlian, widget: string } }
+
+      - name: certifications
+        label: Sertifikasi
+        file: data/certifications.json
+        fields:
+          - name: items
+            label: Sertifikasi
+            label_singular: Sertifikat
+            widget: list
+            required: false
+            add_to_top: true
+            summary: "{{fields.name}} — {{fields.issuer}}"
+            fields:
+              - { name: name, label: Nama sertifikat, widget: string }
+              - { name: issuer, label: Penerbit, widget: string, required: false }
+              - { name: year, label: Tahun, widget: string, required: false }
+              - { name: score, label: Skor (opsional), widget: string, required: false }
+              - { name: url, label: Kredensial (berkas atau URL), widget: file, required: false }
+
+      - name: education
+        label: Pendidikan
+        file: data/education.json
+        fields:
+          - name: items
+            label: Pendidikan
+            label_singular: Pendidikan
+            widget: list
+            required: false
+            summary: "{{fields.degree}} — {{fields.school}}"
+            fields:
+              - { name: degree, label: Jenjang & program studi, widget: string }
+              - { name: school, label: Institusi, widget: string, required: false }
+              - { name: period, label: Periode, widget: string, required: false }
+              - { name: badge, label: Label kecil, widget: string, required: false, hint: "mis. Lulus, Sedang berjalan" }
+              - { name: description, label: Keterangan, widget: text, required: false }
+              - *files_field
+
+      - name: volunteering
+        label: Kesukarelawanan
+        file: data/volunteering.json
+        fields:
+          - name: items
+            label: Kesukarelawanan
+            label_singular: Kegiatan
+            widget: list
+            required: false
+            summary: "{{fields.title}}"
+            fields:
+              - { name: title, label: Kegiatan, widget: string }
+              - { name: org, label: Organisasi, widget: string, required: false }
+              - { name: period, label: Periode, widget: string, required: false }
+              - { name: description, label: Deskripsi, widget: text, required: false }
+
+      - name: gallery
+        label: Galeri
+        file: data/gallery.json
+        fields:
+          - name: items
+            label: Foto
+            label_singular: Foto
+            widget: list
+            required: false
+            add_to_top: true
+            summary: "{{fields.caption}}"
+            fields:
+              - { name: image, label: Foto, widget: image }
+              - { name: caption, label: Keterangan, widget: string, required: false }
+
+      - name: posts
+        label: Blog
+        file: data/posts.json
+        fields:
+          - name: items
+            label: Tulisan
+            label_singular: Tulisan
+            widget: list
+            required: false
+            add_to_top: true
+            summary: "{{fields.date}} — {{fields.title}}"
+            fields:
+              - { name: title, label: Judul, widget: string }
+              - { name: slug, label: Alamat (slug), widget: string, required: false, hint: "Huruf kecil dan tanda hubung, mis. perjalanan-ke-lubuklinggau. Otomatis dari judul bila kosong." }
+              - { name: date, label: Tanggal, widget: datetime, time_format: false, date_format: "YYYY-MM-DD", format: "YYYY-MM-DD" }
+              - { name: cover, label: Gambar sampul, widget: image, required: false }
+              - { name: excerpt, label: Ringkasan, widget: text, required: false }
+              - { name: body, label: Isi tulisan, widget: markdown }

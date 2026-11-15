@@ -1,0 +1,31 @@
+{
+  "items": [
+    {
+      "group": "Analisis Kebijakan",
+      "items": [
+        "Stakeholder mapping",
+        "Power-interest grid",
+        "Analisis jaringan",
+        "Policy formulation"
+      ]
+    },
+    {
+      "group": "Metode Riset",
+      "items": [
+        "Wawancara mendalam",
+        "Koding data kualitatif",
+        "Analisis bibliometrik"
+      ]
+    },
+    {
+      "group": "Perangkat",
+      "items": [
+        "VOSviewer",
+        "OpenAlex",
+        "Mendeley",
+        "Python",
+        "Excel"
+      ]
+    }
+  ]
+}

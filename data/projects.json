@@ -1,0 +1,29 @@
+{
+  "items": [
+    {
+      "year": "2026",
+      "title": "Stakeholder Mapping Kebijakan Stunting Kota Lubuklinggau",
+      "category": "Riset",
+      "description": "Pemetaan aktor dalam perumusan Ranperda inisiatif DPRD Kota Lubuklinggau tentang pencegahan dan penanganan stunting, memakai power-interest grid (Mendelow) dan analisis relational gap. Wawancara 18 informan, Juni-Agustus 2026.",
+      "image": "",
+      "link": "",
+      "tags": [
+        "Stakeholder mapping",
+        "Mendelow",
+        "Relational gap"
+      ]
+    },
+    {
+      "year": "2026",
+      "title": "Peta Literatur Stakeholder Mapping dan Stunting",
+      "category": "Bibliometrik",
+      "description": "Analisis 200 artikel (2019-2026) dengan VOSviewer. Hasil peta: 63 item dalam 10 klaster.",
+      "image": "",
+      "link": "",
+      "tags": [
+        "VOSviewer",
+        "Bibliometrik"
+      ]
+    }
+  ]
+}
