@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Panel Admin — Portofolio</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="admin.css">
+</head>
+<body>
+
+  <!-- LOGIN -->
+  <div id="login" class="login">
+    <form class="login-card" id="loginForm">
+      <h1>Panel Admin</h1>
+      <p class="muted">Masuk dengan GitHub token untuk mengedit isi portofolio. Perubahan disimpan langsung ke repository dan tampil di situs sekitar 1 menit kemudian.</p>
+      <label>Pemilik repo<input name="owner" required></label>
+      <label>Nama repo<input name="repo" required></label>
+      <label>Branch<input name="branch" value="main" required></label>
+      <label>GitHub token
+        <input name="token" type="password" placeholder="github_pat_..." required autocomplete="off">
+      </label>
+      <label class="check"><input type="checkbox" name="remember"> Ingat di perangkat ini</label>
+      <button class="btn primary" type="submit">Masuk</button>
+      <p class="err" id="loginErr"></p>
+      <details class="help">
+        <summary>Cara membuat token</summary>
+        <ol>
+          <li>Buka <a href="https://github.com/settings/personal-access-tokens/new" target="_blank" rel="noopener">github.com/settings/personal-access-tokens/new</a>.</li>
+          <li>Isi nama token, pilih masa berlaku.</li>
+          <li><b>Repository access</b> → <i>Only select repositories</i> → pilih repo portofolio ini saja.</li>
+          <li><b>Permissions → Repository permissions → Contents</b> → <i>Read and write</i>.</li>
+          <li>Klik <b>Generate token</b>, salin, tempel di atas.</li>
+        </ol>
+        <p>Jangan bagikan token ke siapa pun. Token hanya disimpan di browser ini.</p>
+      </details>
+    </form>
+  </div>
+
+  <!-- APP -->
+  <div id="app" class="app hidden">
+    <aside class="side">
+      <div class="side-head"><strong>Admin</strong><span class="muted" id="repoName"></span></div>
+      <nav id="tabs"></nav>
+      <div class="side-foot">
+        <a class="btn ghost" href="../" target="_blank" rel="noopener">Lihat situs ↗</a>
+        <button class="btn ghost" id="exportBtn">Unduh cadangan JSON</button>
+        <label class="btn ghost">Pulihkan dari JSON<input type="file" id="importInput" accept=".json" hidden></label>
+        <button class="btn ghost" id="logoutBtn">Keluar</button>
+      </div>
+    </aside>
+    <main class="main">
+      <header class="bar">
+        <button class="btn ghost menu" id="menuBtn">☰</button>
+        <h2 id="secTitle"></h2>
+        <span class="dirty hidden" id="dirty">Belum disimpan</span>
+        <button class="btn primary" id="saveBtn">Simpan &amp; Terbitkan</button>
+      </header>
+      <div id="editor" class="editor"></div>
+    </main>
+  </div>
+
+  <div id="toast" class="toast"></div>
+
+  <script src="admin.js"></script>
+</body>
+</html>
